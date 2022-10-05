@@ -1,9 +1,6 @@
 #ifndef _MONTY
 #define _MONTY
 
-#define STACK 0
-#define QUEUE 1
-
 /* Libraries/Headers */
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,10 +60,7 @@ void pchar(stack_t **stack, unsigned int line_number);
 void pstr(stack_t **stack, unsigned int line_number);
 void rotl(stack_t **stack, unsigned int line_number);
 void rotr(stack_t **stack, unsigned int line_number);
-void coms(stack_t **stack, unsigned int line_number);
-void monty_stack(stack_t **stack, unsigned int line_number);
-void monty_queue(stack_t **stack, unsigned int line_number);
-size_t getline(char **string, size_t *n, FILE *stream);
+
 
 
 /**

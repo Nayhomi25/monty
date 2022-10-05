@@ -1,6 +1,9 @@
 #ifndef _MONTY
 #define _MONTY
 
+#define STACK 0
+#define QUEUE 1
+
 /* Libraries/Headers */
 #include <stdio.h>
 #include <stdlib.h>
@@ -45,22 +48,25 @@ int _iswhitespace(void);
 void exit_free(stack_t *stack);
 void free_stack(stack_t *stack);
 void opcomp(stack_t **stack, unsigned int line_number, char *opcode);
-void push(stack_t **stack, unsigned int line_number);
-void pall(stack_t **stack, unsigned int line_number);
-void pint(stack_t **stack, unsigned int line_number);
-void pop(stack_t **stack, unsigned int line_number);
-void swap(stack_t **stack, unsigned int line_number);
+void stack_push(stack_t **stack, unsigned int line_number);
+void stack_pall(stack_t **stack, unsigned int line_number);
+void stack_pint(stack_t **stack, unsigned int line_number);
+void stack_pop(stack_t **stack, unsigned int line_number);
+void stack_swap(stack_t **stack, unsigned int line_number);
 void add(stack_t **stack, unsigned int line_number);
 void sub(stack_t **stack, unsigned int line_number);
 void mul(stack_t **stack, unsigned int line_number);
 void divide(stack_t **stack, unsigned int line_number);
 void mod(stack_t **stack, unsigned int line_number);
-void nop(stack_t **stack, unsigned int line_number);
+void stack_nop(stack_t **stack, unsigned int line_number);
 void pchar(stack_t **stack, unsigned int line_number);
 void pstr(stack_t **stack, unsigned int line_number);
 void rotl(stack_t **stack, unsigned int line_number);
 void rotr(stack_t **stack, unsigned int line_number);
-
+void coms(stack_t **stack, unsigned int line_number);
+void monty_stack(stack_t **stack, unsigned int line_number);
+void monty_queue(stack_t **stack, unsigned int line_number);
+size_t getline(char **string, size_t *n, FILE *stream);
 
 
 /**

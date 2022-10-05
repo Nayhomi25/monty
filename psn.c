@@ -1,11 +1,11 @@
 #include "monty.h"
 /**
- * stack_pop - removes top item from stack
+ * pop - removes top item from stack
  * @stack: stack
  * @line_number: monty file line number
  * Return: void
  */
-void stack_pop(stack_t **stack, unsigned int line_number)
+void pop(stack_t **stack, unsigned int line_number)
 {
 	stack_t *tmp = *stack;
 
@@ -28,23 +28,23 @@ void stack_pop(stack_t **stack, unsigned int line_number)
 	}
 }
 /**
- * stack_nop - do nothing
+ * nop - do nothing
  * @stack: unused
  * @line_number: unused
  * Return: void
  */
-void stack_nop(stack_t **stack, unsigned int line_number)
+void nop(stack_t **stack, unsigned int line_number)
 {
 	(void) stack;
 	(void) line_number;
 }
 /**
- * stack_swap - swaps data from top two nodes in stack
+ * swap - swaps data from top two nodes in stack
  * @stack: stack
  * @line_number: monty file line number
  * Return: void
  */
-void stack_swap(stack_t **stack, unsigned int line_number)
+void swap(stack_t **stack, unsigned int line_number)
 {
 	int temp;
 

@@ -11,10 +11,10 @@ void opcomp(stack_t **stack, unsigned int line_number, char *opcode)
 	int index = 0;
 
 	instruction_t opc[] = {
-		{"push", stack_push}, {"pall", stack_pall},
-		{"pint", stack_pint}, {"pop", stack_pop},
-		{"swap", stack_swap}, {"add", add},
-		{"nop", stack_nop}, {"sub", sub},
+		{"push", push}, {"pall", pall},
+		{"pint", pint}, {"pop", pop},
+		{"swap", swap}, {"add", add},
+		{"nop", nop}, {"sub", sub},
 		{"div", divide}, {"mul", mul},
 		{"mod", mod}, {"pchar", pchar},
 		{"pstr", pstr}, {"rotl", rotl},

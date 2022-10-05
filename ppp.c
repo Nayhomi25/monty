@@ -1,11 +1,11 @@
 #include "monty.h"
 /**
- * stack_push - push a node onto the stack
+ * push - push a node onto the stack
  * @stack: stack
  * @line_number: line number in monty .m file
  * Return: void
  */
-void stack_push(stack_t **stack, unsigned int line_number
+void push(stack_t **stack, unsigned int line_number
 	__attribute__((unused)))
 {
 	stack_t *tmp;
@@ -28,12 +28,12 @@ void stack_push(stack_t **stack, unsigned int line_number
 	*stack = tmp;
 }
 /**
- * stack_pall - print all data in stack
+ * pall - print all data in stack
  * @stack: stack
  * @line_number: line number in monty .m file
  * Return: void
  */
-void stack_pall(stack_t **stack, unsigned int line_number)
+void pall(stack_t **stack, unsigned int line_number)
 {
 	stack_t *tmp = *stack;
 
@@ -45,12 +45,12 @@ void stack_pall(stack_t **stack, unsigned int line_number)
 	}
 }
 /**
- * stack_pint - print top int
+ * pint - print top int
  * @stack: stack
  * @line_number: line number in monty .m file
  * Return: void
  */
-void stack_pint(stack_t **stack, unsigned int line_number)
+void pint(stack_t **stack, unsigned int line_number)
 {
 	stack_t *tmp = *stack;
 

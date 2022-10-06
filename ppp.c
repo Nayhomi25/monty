@@ -1,85 +1,63 @@
 #include "monty.h"
-
 /**
-* f_push - function that adds node to the stack
-* @head: double head pointer to the stack
-* @counter: line count
-*
-* Return: nothing
-*/
-void f_push(stack_t **head, unsigned int counter)
+ * push - push a node onto the stack
+ * @stack: stack
+ * @line_number: line number in monty .m file
+ * Return: void
+ */
+void push(stack_t **stack, unsigned int line_number __attribute__((unused)))
 {
-	int i, m = 0, flag = 0;
+	stack_t *tmp;
 
-	if (bus.arg)
+	tmp = malloc(sizeof(stack_t)); /* not freed */
+	if (tmp == NULL)
 	{
-		if (bus.arg[0] == '-')
-			m++;
-		for (; bus.arg[m] != '\0'; m++)
-		{
-			if (bus.arg[m] > 57 || bus.arg[m] < 48)
-				flag = 1; }
-		if (flag == 1)
-		{ fprintf(stderr, "L%d: usage: push integer\n", counter);
-			fclose(bus.file);
-			free(bus.content);
-			free_stack(*head);
-			exit(EXIT_FAILURE);
-		}
-	}
-	else
-	{ fprintf(stderr, "L%d: usage: push integer\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
-		exit(EXIT_FAILURE); }
-	i = atoi(bus.arg);
-	if (bus.lifi == 0)
-		addnode(head, i);
-	else
-		addqueue(head, i);
-}
-
-/**
-* f_pop - function that prints the top of the stack
-* @head: double head pointer to the stack
-* @counter: line count
-*
-* Return: nothing
-*/
-void f_pop(stack_t **head, unsigned int counter)
-{
-	stack_t *h;
-
-	if (*head == NULL)
-	{
-		fprintf(stderr, "L%d: can't pop an empty stack\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
+		fprintf(stderr, "Error: malloc failed");
+		exit_free(*stack);
 		exit(EXIT_FAILURE);
 	}
-	h = *head;
-	*head = h->next;
-	free(h);
-}
-
-/**
-* f_pint - function that prints the top of the stack
-* @head: double head pointer to the stack
-* @counter: line count
-*
-* Return: nothing
-*/
-void f_pint(stack_t **head, unsigned int counter)
-{
-	if (*head == NULL)
+	tmp->n = globes.data;
+	tmp->prev = NULL;
+	tmp->next = NULL;
+	if (*stack != NULL)
 	{
-		fprintf(stderr, "L%u: can't pint, stack empty\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
+		tmp->next = *stack;
+		(*stack)->prev = tmp;
+	}
+	*stack = tmp;
+}
+/**
+ * pall - print all data in stack
+ * @stack: stack
+ * @line_number: line number in monty .m file
+ * Return: void
+ */
+void pall(stack_t **stack, unsigned int line_number)
+{
+	stack_t *tmp = *stack;
+
+	(void) line_number;
+	while (tmp != NULL)
+	{
+		printf("%d\n", tmp->n);
+		tmp = tmp->next;
+	}
+}
+/**
+ * pint - print top int
+ * @stack: stack
+ * @line_number: line number in monty .m file
+ * Return: void
+ */
+void pint(stack_t **stack, unsigned int line_number)
+{
+	stack_t *tmp = *stack;
+
+	if (tmp == NULL)
+	{
+		fprintf(stderr, "L%d: can't pint, stack empty", line_number);
+		exit_free(*stack);
 		exit(EXIT_FAILURE);
 	}
-	printf("%d\n", (*head)->n);
+	printf("%d\n", tmp->n);
 }

@@ -1,68 +1,60 @@
 #include "monty.h"
-
 /**
-* f_pall - function that prints everything in the stack
-* @head: double head pointer to the stack
-* @counter: unused line count
-*
-* Return: nothing
-*/
-void f_pall(stack_t **head, unsigned int counter)
+ * pop - removes top item from stack
+ * @stack: stack
+ * @line_number: monty file line number
+ * Return: void
+ */
+void pop(stack_t **stack, unsigned int line_number)
 {
-	stack_t *h;
-	(void)counter;
+	stack_t *tmp = *stack;
 
-	h = *head;
-	if (h == NULL)
-		return;
-	while (h)
+	if (tmp == NULL)
 	{
-		printf("%d\n", h->n);
-		h = h->next;
-	}
-}
-
-/**
-* f_swap - function that swaps the top two elements of the stack
-* @head: head of stack
-* @counter: line count
-*
-* Return: nothing
-*/
-void f_swap(stack_t **head, unsigned int counter)
-{
-	stack_t *h;
-	int length = 0, temp;
-
-	h = *head;
-	while (h)
-	{
-		h = h->next;
-		length++;
-	}
-	if (length < 2)
-	{
-		fprintf(stderr, "L%d: can't swap, stack too short\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
+		fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
+		exit_free(*stack);
 		exit(EXIT_FAILURE);
 	}
-	h = *head;
-	temp = h->n;
-	h->n = h->next->n;
-	h->next->n = temp;
+	if (tmp->next == NULL)
+	{
+		free(*stack);
+		*stack = NULL;
+	}
+	else
+	{
+		(*stack) = (*stack)->next;
+		(*stack)->prev = NULL;
+		free(tmp);
+	}
 }
-
 /**
-* f_nop - function that does nothing
-* @head: double head pointer to the stack
-* @counter: line count
-*
-* Return: nothing
-*/
-void f_nop(stack_t **head, unsigned int counter)
+ * nop - do nothing
+ * @stack: unused
+ * @line_number: unused
+ * Return: void
+ */
+void nop(stack_t **stack, unsigned int line_number)
 {
-	(void) counter;
-	(void) head;
+	(void) stack;
+	(void) line_number;
+}
+/**
+ * swap - swaps data from top two nodes in stack
+ * @stack: stack
+ * @line_number: monty file line number
+ * Return: void
+ */
+void swap(stack_t **stack, unsigned int line_number)
+{
+	int temp;
+
+	if (*stack == NULL || (*stack)->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
+		exit_free(*stack);
+		exit(EXIT_FAILURE);
+	}
+	temp = (*stack)->n;
+	(*stack)->n = (*stack)->next->n;
+	(*stack)->next->n = temp;
 }

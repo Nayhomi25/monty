@@ -1,63 +1,68 @@
 #include "monty.h"
-/**
- * push - push a node onto the stack
- * @stack: stack
- * @line_number: line number in monty .m file
- * Return: void
- */
-void push(stack_t **stack, unsigned int line_number __attribute__((unused)))
-{
-	stack_t *tmp;
 
-	tmp = malloc(sizeof(stack_t)); /* not freed */
-	if (tmp == NULL)
-	{
-		fprintf(stderr, "Error: malloc failed");
-		exit_free(*stack);
-		exit(EXIT_FAILURE);
-	}
-	tmp->n = globes.data;
-	tmp->prev = NULL;
-	tmp->next = NULL;
-	if (*stack != NULL)
-	{
-		tmp->next = *stack;
-		(*stack)->prev = tmp;
-	}
-	*stack = tmp;
-}
 /**
- * pall - print all data in stack
- * @stack: stack
- * @line_number: line number in monty .m file
- * Return: void
- */
-void pall(stack_t **stack, unsigned int line_number)
+* f_pall - function that prints everything in the stack
+* @head: double head pointer to the stack
+* @counter: unused line count
+*
+* Return: nothing
+*/
+void f_pall(stack_t **head, unsigned int counter)
 {
-	stack_t *tmp = *stack;
+	stack_t *h;
+	(void)counter;
 
-	(void) line_number;
-	while (tmp != NULL)
+	h = *head;
+	if (h == NULL)
+		return;
+	while (h)
 	{
-		printf("%d\n", tmp->n);
-		tmp = tmp->next;
+		printf("%d\n", h->n);
+		h = h->next;
 	}
 }
-/**
- * pint - print top int
- * @stack: stack
- * @line_number: line number in monty .m file
- * Return: void
- */
-void pint(stack_t **stack, unsigned int line_number)
-{
-	stack_t *tmp = *stack;
 
-	if (tmp == NULL)
+/**
+* f_swap - function that swaps the top two elements of the stack
+* @head: head of stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_swap(stack_t **head, unsigned int counter)
+{
+	stack_t *h;
+	int length = 0, temp;
+
+	h = *head;
+	while (h)
 	{
-		fprintf(stderr, "L%d: can't pint, stack empty", line_number);
-		exit_free(*stack);
+		h = h->next;
+		length++;
+	}
+	if (length < 2)
+	{
+		fprintf(stderr, "L%d: can't swap, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	printf("%d\n", tmp->n);
+	h = *head;
+	temp = h->n;
+	h->n = h->next->n;
+	h->next->n = temp;
+}
+
+/**
+* f_nop - function that does nothing
+* @head: double head pointer to the stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_nop(stack_t **head, unsigned int counter)
+{
+	(void) counter;
+	(void) head;
 }

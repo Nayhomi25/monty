@@ -1,109 +1,145 @@
 #include "monty.h"
-/**
- * pchar - print the char at the top of the stack
- * @stack: stack
- * @line_number: line number in monty file
- * Return: void
- */
-void pchar(stack_t **stack, unsigned int line_number)
-{
-	if (*stack == NULL)
-	{
-		fprintf(stderr, "L%d: can't pchar, stack empty\n", line_number);
-		exit_free(*stack);
-		exit(EXIT_FAILURE);
-	}
-	if ((*stack)->n < 0 || (*stack)->n > 127)
-	{
-		fprintf(stderr, "L%d: can't pchar, value out of range\n", line_number);
-		exit_free(*stack);
-		exit(EXIT_FAILURE);
-	}
-	printf("%c\n", (*stack)->n);
-}
-/**
- * pstr - print the string starting at the top of the stack
- * @stack: stack
- * @line_number: line number in monty file
- * Return: void
- */
-void pstr(stack_t **stack, unsigned int line_number __attribute__((unused)))
-{
-	stack_t *tmp;
 
-	tmp = *stack;
-	while (tmp != NULL)
+/**
+* f_pstr - function that prints the string starting at the top of the stack,
+* followed by a new
+* @head: head of stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_pstr(stack_t **head, unsigned int counter)
+{
+	stack_t *h;
+	(void)counter;
+
+	h = *head;
+	while (h)
 	{
-		if (tmp->n <= 0 || tmp->n > 127)
+		if (h->n > 127 || h->n <= 0)
+		{
 			break;
-		printf("%c", tmp->n);
-		tmp = tmp->next;
+		}
+		printf("%c", h->n);
+		h = h->next;
 	}
 	printf("\n");
 }
+
+#include "monty.h"
+
 /**
- * rotl - rotate the stack to the top
- * @stack: stack
- * @line_number: line number in monty file
- * Return: void
- */
-void rotl(stack_t **stack, unsigned int line_number __attribute__((unused)))
+* f_pchar - function that prints the char at the top of the stack,
+* followed by a new line
+* @head: stack head
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_pchar(stack_t **head, unsigned int counter)
 {
-	int tmp;
-	stack_t *ptr = *stack;
+	stack_t *h;
 
-	if (*stack == NULL)
-		return;
-	tmp = (*stack)->n;
-	while (ptr->next != NULL)
+	h = *head;
+	if (!h)
 	{
-		ptr->n = ptr->next->n;
-		ptr = ptr->next;
+		fprintf(stderr, "L%d: can't pchar, stack empty\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
 	}
-	ptr->n = tmp;
-}
-/**
- * rotr - rotate the stack to the bottom
- * @stack: stack
- * @line_number: line number in monty file
- * Return: void
- */
-void rotr(stack_t **stack, unsigned int line_number __attribute__((unused)))
-{
-	int tmp;
-	stack_t *ptr = *stack;
-
-	if (*stack == NULL)
-		return;
-
-	while (ptr->next != NULL)
-		ptr = ptr->next;
-	tmp = ptr->n;
-	while (ptr->prev != NULL)
+	if (h->n > 127 || h->n < 0)
 	{
-		ptr->n = ptr->prev->n;
-		ptr = ptr->prev;
+		fprintf(stderr, "L%d: can't pchar, value out of range\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
 	}
-	ptr->n = tmp;
+	printf("%c\n", h->n);
 }
 
+#include "monty.h"
 
 /**
- * coms - handle comments
- * @stack: stack
- * @line_number: line number in monty file
- * Return: void
- */
-
-void coms(stack_t **stack, unsigned int line_number __attribute__((unused)))
+* f_rotl- function that rotates the stack to the top
+* @head: head of the stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_rotl(stack_t **head,  __attribute__((unused)) unsigned int counter)
 {
-	stack_t *tmp;
+	stack_t *tmp = *head, *aux;
 
-	tmp = *stack;
-	while (tmp != NULL)
+	if (*head == NULL || (*head)->next == NULL)
 	{
-		if (tmp->n == '#')
-			break;
+		return;
+	}
+	aux = (*head)->next;
+	aux->prev = NULL;
+	while (tmp->next != NULL)
+	{
 		tmp = tmp->next;
 	}
+	tmp->next = *head;
+	(*head)->next = NULL;
+	(*head)->prev = tmp;
+	(*head) = aux;
+}
+
+#include "monty.h"
+
+/**
+* f_rotr - function that rotates the stack to the bottom
+* @head: stack head of the stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_rotr(stack_t **head, __attribute__((unused)) unsigned int counter)
+{
+	stack_t *copy;
+
+	copy = *head;
+	if (*head == NULL || (*head)->next == NULL)
+	{
+		return;
+	}
+	while (copy->next)
+	{
+		copy = copy->next;
+	}
+	copy->next = *head;
+	copy->prev->next = NULL;
+	copy->prev = NULL;
+	(*head)->prev = copy;
+	(*head) = copy;
+}
+
+#include "monty.h"
+
+/**
+* addnode - function that adds node to the head stack
+* @head: head of the stack
+* @n: new value
+*
+* Return: nothing
+*/
+void addnode(stack_t **head, int n)
+{
+	stack_t *new_node, *temp;
+
+	temp = *head;
+	new_node = malloc(sizeof(stack_t));
+	if (new_node == NULL)
+	{ printf("Error\n");
+		exit(0); }
+	if (temp)
+		temp->prev = new_node;
+	new_node->n = n;
+	new_node->next = *head;
+	new_node->prev = NULL;
+	*head = new_node;
 }

@@ -1,133 +1,180 @@
 #include "monty.h"
-/**
- * add - add two nodes remove the top node and place sum in new
- * @stack: dll stack
- * @line_number: line num
- *
- * Return: void
- */
-void add(stack_t **stack, unsigned int line_number)
-{
-	int a, b;
 
-	if (*stack == NULL || (*stack)->next == NULL)
+/**
+* f_add - function that adds the top two elements of the stack
+* @head: double pointer head to the stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_add(stack_t **head, unsigned int counter)
+{
+	stack_t *h;
+	int length = 0, temp;
+
+	h = *head;
+	while (h)
 	{
-		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
-		exit_free(*stack);
+		h = h->next;
+		length++;
+	}
+	if (length < 2)
+	{
+		fprintf(stderr, "L%d: can't add, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	a = (*stack)->n;
-	b = (*stack)->next->n;
-	*stack = (*stack)->next;
-	free((*stack)->prev);
-	(*stack)->prev = NULL;
-	(*stack)->n = a + b;
+	h = *head;
+	temp = h->n + h->next->n;
+	h->next->n = temp;
+	*head = h->next;
+	free(h);
 }
-/**
- * sub - sub two nodes remove the top node and place sum in new
- * @stack: dll stack
- * @line_number: line num
- *
- * Return: void
- */
-void sub(stack_t **stack, unsigned int line_number)
-{
-	int a, b;
 
-	if (*stack == NULL || (*stack)->next == NULL)
+/**
+* f_sub - function that substracts nodes
+* @head: double head pointer to the stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_sub(stack_t **head, unsigned int counter)
+{
+	stack_t *temp;
+	int sub, nd;
+
+	temp = *head;
+	for (nd = 0; temp != NULL; nd++)
+		temp = temp->next;
+	if (nd < 2)
 	{
-		fprintf(stderr, "L%d: can't sub, stack too short\n", line_number);
-		exit_free(*stack);
+		fprintf(stderr, "L%d: can't sub, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	a = (*stack)->n;
-	b = (*stack)->next->n;
-	*stack = (*stack)->next;
-	free((*stack)->prev);
-	(*stack)->prev = NULL;
-	(*stack)->n = b - a;
+	temp = *head;
+	sub = temp->next->n - temp->n;
+	temp->next->n = sub;
+	*head = temp->next;
+	free(temp);
 }
-/**
- * divide - div two nodes remove the top node and place sum in new
- * @stack: dll stack
- * @line_number: line num
- *
- * Return: void
- */
-void divide(stack_t **stack, unsigned int line_number)
-{
-	int a, b;
 
-	if (*stack == NULL || (*stack)->next == NULL)
+/**
+* f_mul - function that multiplies the top two elements of the stack
+* @head: double head pointer to the stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_mul(stack_t **head, unsigned int counter)
+{
+	stack_t *h;
+	int length = 0, temp;
+
+	h = *head;
+	while (h)
 	{
-		fprintf(stderr, "L%d: can't div, stack too short\n", line_number);
-		exit_free(*stack);
+		h = h->next;
+		length++;
+	}
+	if (length < 2)
+	{
+		fprintf(stderr, "L%d: can't mul, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	a = (*stack)->n;
-	if (a == 0)
-	{
-		fprintf(stderr, "L%d: division by zero\n", line_number);
-		exit_free(*stack);
-		exit(EXIT_FAILURE);
-	}
-	b = (*stack)->next->n;
-	*stack = (*stack)->next;
-	free((*stack)->prev);
-	(*stack)->prev = NULL;
-	(*stack)->n = b / a;
+	h = *head;
+	temp = h->next->n * h->n;
+	h->next->n = temp;
+	*head = h->next;
+	free(h);
 }
-/**
- * mul - mul two nodes remove the top node and place sum in new
- * @stack: dll stack
- * @line_number: line num
- *
- * Return: void
- */
-void mul(stack_t **stack, unsigned int line_number)
-{
-	int a, b;
 
-	if (*stack == NULL || (*stack)->next == NULL)
+/**
+* f_div - function that divides the top two elements of the stack
+* @head: double head pointer to the stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_div(stack_t **head, unsigned int counter)
+{
+	stack_t *h;
+	int length = 0, temp;
+
+	h = *head;
+	while (h)
 	{
-		fprintf(stderr, "L%d: can't mul, stack too short\n", line_number);
-		exit_free(*stack);
+		h = h->next;
+		length++;
+	}
+	if (length < 2)
+	{
+		fprintf(stderr, "L%d: can't div, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	a = (*stack)->n;
-	b = (*stack)->next->n;
-	*stack = (*stack)->next;
-	free((*stack)->prev);
-	(*stack)->prev = NULL;
-	(*stack)->n = b * a;
+	h = *head;
+	if (h->n == 0)
+	{
+		fprintf(stderr, "L%d: division by zero\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
+	}
+	temp = h->next->n / h->n;
+	h->next->n = temp;
+	*head = h->next;
+	free(h);
 }
-/**
- * mod - mod two nodes remove the top node and place sum in new
- * @stack: dll stack
- * @line_number: line num
- *
- * Return: void
- */
-void mod(stack_t **stack, unsigned int line_number)
-{
-	int a, b;
 
-	if (*stack == NULL || (*stack)->next == NULL)
+/**
+* f_mod - function that computes the remainder of the division of the second
+* top element of the stack by the top element of the stack
+* @head: double head pointer to the stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_mod(stack_t **head, unsigned int counter)
+{
+	stack_t *h;
+	int length = 0, temp;
+
+	h = *head;
+	while (h)
 	{
-		fprintf(stderr, "L%d: can't mod, stack too short\n", line_number);
-		exit_free(*stack);
+		h = h->next;
+		length++;
+	}
+	if (length < 2)
+	{
+		fprintf(stderr, "L%d: can't mod, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	a = (*stack)->n;
-	if (a == 0)
+	h = *head;
+	if (h->n == 0)
 	{
-		fprintf(stderr, "L%d: division by zero\n", line_number);
-		exit_free(*stack);
+		fprintf(stderr, "L%d: division by zero\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	b = (*stack)->next->n;
-	*stack = (*stack)->next;
-	free((*stack)->prev);
-	(*stack)->prev = NULL;
-	(*stack)->n = b % a;
+	temp = h->next->n % h->n;
+	h->next->n = temp;
+	*head = h->next;
+	free(h);
 }

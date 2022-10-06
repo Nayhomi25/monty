@@ -1,60 +1,85 @@
 #include "monty.h"
-/**
- * pop - removes top item from stack
- * @stack: stack
- * @line_number: monty file line number
- * Return: void
- */
-void pop(stack_t **stack, unsigned int line_number)
-{
-	stack_t *tmp = *stack;
 
-	if (tmp == NULL)
+/**
+* f_push - function that adds node to the stack
+* @head: double head pointer to the stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_push(stack_t **head, unsigned int counter)
+{
+	int i, m = 0, flag = 0;
+
+	if (bus.arg)
 	{
-		fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
-		exit_free(*stack);
-		exit(EXIT_FAILURE);
-	}
-	if (tmp->next == NULL)
-	{
-		free(*stack);
-		*stack = NULL;
+		if (bus.arg[0] == '-')
+			m++;
+		for (; bus.arg[m] != '\0'; m++)
+		{
+			if (bus.arg[m] > 57 || bus.arg[m] < 48)
+				flag = 1; }
+		if (flag == 1)
+		{ fprintf(stderr, "L%d: usage: push integer\n", counter);
+			fclose(bus.file);
+			free(bus.content);
+			free_stack(*head);
+			exit(EXIT_FAILURE);
+		}
 	}
 	else
-	{
-		(*stack) = (*stack)->next;
-		(*stack)->prev = NULL;
-		free(tmp);
-	}
+	{ fprintf(stderr, "L%d: usage: push integer\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE); }
+	i = atoi(bus.arg);
+	if (bus.lifi == 0)
+		addnode(head, i);
+	else
+		addqueue(head, i);
 }
-/**
- * nop - do nothing
- * @stack: unused
- * @line_number: unused
- * Return: void
- */
-void nop(stack_t **stack, unsigned int line_number)
-{
-	(void) stack;
-	(void) line_number;
-}
-/**
- * swap - swaps data from top two nodes in stack
- * @stack: stack
- * @line_number: monty file line number
- * Return: void
- */
-void swap(stack_t **stack, unsigned int line_number)
-{
-	int temp;
 
-	if (*stack == NULL || (*stack)->next == NULL)
+/**
+* f_pop - function that prints the top of the stack
+* @head: double head pointer to the stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_pop(stack_t **head, unsigned int counter)
+{
+	stack_t *h;
+
+	if (*head == NULL)
 	{
-		fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
-		exit_free(*stack);
+		fprintf(stderr, "L%d: can't pop an empty stack\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	temp = (*stack)->n;
-	(*stack)->n = (*stack)->next->n;
-	(*stack)->next->n = temp;
+	h = *head;
+	*head = h->next;
+	free(h);
+}
+
+/**
+* f_pint - function that prints the top of the stack
+* @head: double head pointer to the stack
+* @counter: line count
+*
+* Return: nothing
+*/
+void f_pint(stack_t **head, unsigned int counter)
+{
+	if (*head == NULL)
+	{
+		fprintf(stderr, "L%u: can't pint, stack empty\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
+	}
+	printf("%d\n", (*head)->n);
 }

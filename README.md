@@ -1,116 +1,115 @@
-# Monty Recreation
-#### Hi! This repo is a recreation of the Monty interpreter, made for Holberton school project 
+<h1> Monty Interpreter</h1>
+This is a language interpreter made in the C programming language to            manage stacks and queues (LIFO and FIFO). The aim of this Interpreter is        to interpret Monty bytecodes files. Monty is a language that aims to close      the gap between scripting and programming languages.
+<h2>Requirements</h2>
+<ul>
+<li>Allowed editors: vi, vim, emacs</li>
+<li>All your files will be compiled on Ubuntu 20.04 LTS using gcc, using        the options -Wall -Werror -Wextra -pedantic -std=c90</li>
+<li>All your files should end with a new line</li>
+<li>A README.md file, at the root of the folder of the project is               mandatory</li>
+<li>Your code should use the Betty style. It will be checked using betty-       style.pl and betty-doc.pl</li>
+<li>You allowed to use a maximum of one global variable</li>
+<li>No more than 5 functions per file</li>
+<li>You are allowed to use the C standard library</li>
+<li>Don’t forget to push your header file</li>
+<li>All your header files should be include guarded</li>
+ </ul>
+<h2>Compilation</h2>
+To compile this project, you can use the following command:
+ $ make
 
-------------
+<h2>opcode and their functionality</h2>
 
+1. push: add element to the 'top' of stack and 'end' of queue
 
-# AUTHORS.
-## Alejandro Pineda Sánchez
-- Git: https://github.com/Apinedas
-- Twitter: https://twitter.com/Apsanchez2549
-- Linkedin:
-## Carlos Andres Pardo Rodriguez
-- Git: https://github.com/ANDRES3021
-- Twitter: https://twitter.com/CarlosA54648157
-- Linkedin: https://www.linkedin.com/in/carlos-andres-pardo-rodriguez-8bbb90202/
+2. pop:  remove element from 'top' of stack and 'end' of queue
 
-# Learning Objectives
-At the end of this project, you are expected to be able to explain to anyone , without the help of Google :
+3. pall:     print every member of the structure
 
+4. pint:     prints the member value at the top of stack
 
-## General
+5. swap:   swaps the order of the 1st and 2nd elements in stack
 
-------------
+6. add:    add top two member values
 
+7. sub:    subtract the top element from the 2nd top element
 
-What do LIFO and FIFO mean
-What is a stack, and when to use it
-What is a queue, and when to use it
-What are the common implementations of stacks and queues
-What are the most common use cases of stacks and queues
-What is the proper way to use global variables
+8. div:   divide the 2nd element by the top element
 
-# Requirements
-## General
+9. mul        multiply the top two elements of the stack
 
-Allowed editors: vi , vim , emacs
+10. mod       the remainder when the 2nd element is divided by the top elementcomment    there is the ability to parse comments found in bytecode ->
 
-All your files will be compiled on Ubuntu 20.04 LTS using gcc, using the options -Wall -Werror -Wextra -pedantic -std=c90
+11. pchar     print character at the top of the stack
 
-All your files should end with a new line
+12. pstr  print the character at the top of the stack
 
-A README.md file, at the root of the folder of the project is mandatory
+13. rotl  moves element at the top to the bottom of the stack
 
-Your code should use the Betty style. It will be checked using betty-style.pl and betty-doc.pl
+14. rotr  the bottom of the stack becomes the top
 
-You allowed to use a maximum of one global variable
+15. queue,  stack    toggles the doubly link list implementation style
 
-No more than 5 functions per file
+16. nop       opcode should do nothing.
 
-You are allowed to use the C standard library
+Examples: $ cat opcodetestfile.m
 
-The prototypes of all your functions should be included in your header file called monty.h
+push 1
 
-Don’t forget to push your header file
+push 2
 
-All your header files should be include guarded
+push 3
 
-You are expected to do the tasks in the order shown in the project
+pall
 
-------------
-# Tasks
-## 0. push, pall
-The opcode push pushes an element to the stack.
+$ ./montyfile opcodetestfile.m
 
-Usage: push <int>
-where <int> is an integer
-if <int> is not an integer or if there is no argument given to push, print the error message L<line_number>: usage: push integer, followed by a new line, and exit with the status EXIT_FAILURE
-where is the line number in the file
-You won’t have to deal with overflows. Use the atoi function
-## 1. pint
-The pint opcode
+3
 
-The opcode pint prints the value at the top of the stack, followed by a new line.
+2
 
-Usage: pint
-If the stack is empty, print the error message L<line_number>: can't pint, stack empty, followed by a new line, and exit with the status EXIT_FAILURE
-## 2. pop
-The pop opcode
+1
 
-The opcode pop removes the top element of the stack.
+$
 
-Usage: pop
-If the stack is empty, print the error message L<line_number>: can't pop an empty stack, followed by a new line, and exit with the status EXIT_FAILURE
-## 3. swapThe swap opcode
+$ cat opcodetestfile.m
 
-The opcode swap swaps the top two elements of the stack.
+push 1
 
-Usage: swap
-If the stack contains less than two elements, print the error message L<line_number>: can't swap, stack too short, followed by a new line, and exit with the status EXIT_FAILURE
-## 4. add
-The add opcode
+push 2
 
-The opcode add adds the top two elements of the stack.
+push 3
 
-Usage: add
-If the stack contains less than two elements, print the error message L<line_number>: can't add, stack too short, followed by a new line, and exit with the status EXIT_FAILURE
-The result is stored in the second top element of the stack, and the top element is removed, so that at the end:
-The top element of the stack contains the result
-The stack is one element shorter
-## 5. nop
-The nop opcode
+pall
 
-The opcode nop doesn’t do anything.
+rotl
 
-Usage: nop
+pall
 
-------------
+$ ./montyfile opcodetestfile.m
 
+3
 
+2
 
-# Links
-- [FIFO and LIFO Accounting](http://https://en.wikipedia.org/wiki/FIFO_and_LIFO_accounting "FIFO and LIFO Accounting")
-- [The Monty Scripting Language](http://montyscoconut.github.io/about.html "The Monty Scripting Language")
-- [Stacks ](https://www.youtube.com/watch?v=9Tp8wHD66lw "Stacks ")
+1
 
-------------
+2
+
+1
+
+3
+
+<h2>Exit Status</h2>
+Exits with status EXIT_FAILURE
+<h2>Compilation</h2>
+All files were compiled on Ubuntu 14.04 LTS.
+
+All programs and functions were compiled with gcc 4.8.4 using flags -Wall -Werror -Wextra and -pedantic.
+<h2>Styling</h2>
+All files have been written in the Betty Style.
+
+<h2>Authors</h2>
+
+Nsisong-Akpakpan Nsisong
+
+Martin4dbest Martin Agoha - martin4dtruth@gmail.com

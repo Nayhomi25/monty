@@ -1,51 +1,43 @@
 #include "monty.h"
-#include <stdio.h>
-#define _GNU_SOURCE
-#include <stdlib.h>
-
-bus_t bus = {NULL, NULL, NULL, 0};
 
 /**
-* main - function for monty code interpreter
-* @argc: argument count
-* @argv: argument value
-*
-* Return: 0 on success
-*/
-int main(int argc, char *argv[])
-{
-	char *content;
-	FILE *file;
-	size_t size = 0;
-	ssize_t read_line = 1;
-	stack_t *stack = NULL;
-	unsigned int counter = 0;
+ * main - main function for monty project
+ * @argc: argument counter
+ * @argv: argument vector
+ * Return: always 0
+ */
 
+int main(int argc, char **argv)
+{
+	char buff[40000], *line, *copied_lines[4096], *exec_line = NULL;
+	int fd;
+	unsigned int i;
+	void (*handling_function)(stack_t **, unsigned int);
+	stack_t *stack = NULL;
+
+	initialize_buffer(buff, 40000);
+	initialize_array(copied_lines, 4096);
 	if (argc != 2)
+		USAGE_ERROR;
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		OPEN_ERROR(argv[1]);
+	read(fd, buff, 40000);
+	close(fd);
+	replace_emptylines(buff, copied_lines);
+	line = strtok(buff, "\n");
+	lines_to_array(line, copied_lines);
+	for (i = 1; copied_lines[i - 1]; i++)
 	{
-		fprintf(stderr, "USAGE: monty file\n");
-		exit(EXIT_FAILURE);
+		exec_line = strtok(copied_lines[i - 1], " ");
+		if (!exec_line)
+			continue;
+		handling_function = getopcode_fun(exec_line);
+		if (!handling_function)
+			INSTRUCTION_ERROR(i, exec_line, stack);
+		handling_function(&stack, i);
 	}
-	file = fopen(argv[1], "r");
-	bus.file = file;
-	if (!file)
-	{
-		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-		exit(EXIT_FAILURE);
-	}
-	while (read_line > 0)
-	{
-		content = NULL;
-		read_line = getline(&content, &size, file);
-		bus.content = content;
-		counter++;
-		if (read_line > 0)
-		{
-			execute(content, &stack, counter, file);
-		}
-		free(content);
-	}
-	free_stack(stack);
-	fclose(file);
-return (0);
+	if (stack)
+		free_dlistint(stack);
+	return (0);
 }

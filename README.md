@@ -107,3 +107,6 @@ All files were compiled on Ubuntu 14.04 LTS.
 All programs and functions were compiled with gcc 4.8.4 using flags -Wall -Werror -Wextra and -pedantic.
 <h2>Styling</h2>
 All files have been written in the Betty Style.
+<h2> Author</h2>
+Osunde Osarieme Naomi
+Igbinovia Samuel
